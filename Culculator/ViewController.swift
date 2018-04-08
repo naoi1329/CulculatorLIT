@@ -9,16 +9,33 @@
 import UIKit
 
 enum OperatorTag: Int {
-    case plus = 0
-    case minus = 1
-    case multiple = 2
-    case devide = 3
-    case qual = 4
+    case plus
+    case minus
+    case multiple
+    case devide
+    case notSelect
+    
+    init(rawValue: Int) {
+        switch rawValue {
+        case 0:
+            self = .plus
+        case 1:
+            self = .minus
+        case 2:
+            self = .multiple
+        case 3:
+            self = .devide
+        default:
+            self = .notSelect
+        }
+    }
 }
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var answerLabel: UILabel!
+    var operand: Int = 0
+    var selectedOperator: OperatorTag = .notSelect
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,17 +48,43 @@ class ViewController: UIViewController {
     }
 
     @IBAction func numberButtonAction(_ sender: UIButton) {
-        
+        if answerLabel.text == "" {
+            answerLabel.text = String(Int(sender.titleLabel!.text!)!)
+        } else {
+            answerLabel.text = String(Int(answerLabel.text!)! * 10 + Int(sender.titleLabel!.text!)!)
+        }
     }
     
     @IBAction func operatorButton(_ sender: UIButton) {
-        switch OperatorTag(rawValue: sender.tag) {
-        case <#pattern#>:
-            <#code#>
-        default:
-            <#code#>
+        
+        if answerLabel.text == "" {
+            return
+        }
+        
+        operand = Int(answerLabel.text!)!
+        
+        selectedOperator = OperatorTag(rawValue: sender.tag)
+        
+        answerLabel.text = ""
+    }
+    
+    @IBAction func equalButtonAction(_ sender: Any) {
+        culculate()
+    }
+    
+    func culculate() {
+        switch selectedOperator {
+        case .plus:
+            self.answerLabel.text = String(Int(operand + Int(answerLabel.text!)!))
+        case .minus:
+            self.answerLabel.text = String(Int(operand - Int(answerLabel.text!)!))
+        case .multiple:
+            self.answerLabel.text = String(Int(operand * Int(answerLabel.text!)!))
+        case .devide:
+            self.answerLabel.text = String(Int(operand / Int(answerLabel.text!)!))
+        case .notSelect:
+            break;
         }
     }
-
 }
 
