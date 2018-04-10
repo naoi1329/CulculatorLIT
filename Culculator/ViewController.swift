@@ -72,6 +72,12 @@ class ViewController: UIViewController {
         culculate()
     }
     
+    @IBAction func clearButton(_ sender: Any) {
+        self.answerLabel.text = ""
+        self.operand = 0
+        
+    }
+    
     func culculate() {
         switch selectedOperator {
         case .plus:
